@@ -52,9 +52,7 @@
                         '           <td>' + data[book]["author"]+  '</td>\n' +
                         '           <td>' + data[book]["hardcover"]+  '</td>\n' +
                         '           <td>' + data[book]["price"]+  '</td>\n' +
-                        '           <td>'+
-                        '               <button type="submit" class="btn btn-outline-primary" onclick="print()">Edit</button>'+
-                        '           </td>\n'+
+                        '           <td><a href = "./update-book.html?id='+data[book]["_id"] +'">Edit</a></td>\n'+
                         '       </tr>\n';
                 }
         
