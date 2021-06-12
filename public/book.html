@@ -23,6 +23,19 @@
         <div class="jumbotron" id="output">
 
         </div>
+        <div class="modal" id="confirmModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" id = "closeDelete">Close</button>
+                  <button type="button" class="btn btn-primary" id = "confirmDelete">Confirm Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
         <script>
             RetrieveData();
             function CreateTable(data){
@@ -75,10 +88,37 @@
                 xhttp.open('GET', url, true);
                 xhttp.send();
             }
+
+            let deleteID = 0;
             function Delete(id){
-                console.log(id);
+                let modal = document.getElementById("confirmModal");
+                modal.style.display = "block"; 
+                deleteID = id;
             }
-            
+
+            let confirm = document.getElementById("confirmDelete");
+            confirm.addEventListener("click", () =>{
+                console.log("run")
+                let url = "https://afternoon-hollows-50526.herokuapp.com/api/books/" + deleteID;
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function (){
+                    if (this.readyState == 4 && this.status == 200){
+                        let modal = document.getElementById("confirmModal");
+                        modal.style.display = "none";
+                        RetrieveData();
+                    }
+                };
+                xhttp.open('DELETE', url, true);
+                xhttp.send();
+                 
+            });
+
+            let closeDelete = document.getElementById("closeDelete");
+            closeDelete.addEventListener("click", () =>{
+                deleteID = 0;
+                let modal = document.getElementById("confirmModal");
+                modal.style.display = "none";
+            })
         
         </script>
     </body>
