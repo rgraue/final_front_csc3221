@@ -53,6 +53,7 @@
                         '           <td>' + data[book]["hardcover"]+  '</td>\n' +
                         '           <td>' + data[book]["price"]+  '</td>\n' +
                         '           <td><a href = "./update-book.html?id='+data[book]["_id"] +'">Edit</a></td>\n'+
+                        '           <td><a href="javascript:;" onclick="Delete(\''+ data[book]["_id"] +'\')">Delete</td>\n'+
                         '       </tr>\n';
                 }
         
@@ -74,13 +75,10 @@
                 xhttp.open('GET', url, true);
                 xhttp.send();
             }
-            function print(){
-                console.log("run");
+            function Delete(id){
+                console.log(id);
             }
-            function Update(id){
-                console.log("edit")
-                window.location.href="./update-book?id="+id;
-            }
+            
         
         </script>
     </body>
