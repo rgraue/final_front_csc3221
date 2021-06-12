@@ -1,0 +1,22 @@
+{
+  "name": "final_front_csc3221",
+  "version": "1.0.0",
+  "description": "Front end of final_server_csc3221",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgraue/final_front_csc3221.git"
+  },
+  "dependencies": {
+    "express": "~4.16.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rgraue/final_front_csc3221/issues"
+  },
+  "homepage": "https://github.com/rgraue/final_front_csc3221#readme"
+}
