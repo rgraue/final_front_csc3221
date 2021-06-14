@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
             <ul class="navbar-nav">
                 <li>
                     <a class="nav-link navbar-brand" href="./index.html">Ryan's Library</a>
@@ -20,5 +20,64 @@
                 </li>
             </ul>
         </nav>
+        <div id = "inputForm">
+            <form>
+                <div class="form-group">
+                    <label for="titleInput">Title</label>
+                    <input type="text" class="form-control" id="inputTitle" placeholder="Title" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="authorInput">Author</label>
+                    <input type="text" class="form-control" id="authorInput" placeholder="Author" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="yearInput">Year</label>
+                    <input type="number"  max = "2021" min = "0" class="form-control" id="yearInput" placeholder="Year Input">
+                  </div>
+                  <div class="form-group">
+                    <label for="coverInput" class = "for-check-label">HardCover</label>
+                    <input type="radio" class="form-check-input" id="softInput" placeholder="Softcover" name = "cover" value = "false" checked>
+                  </div>
+                  <div class = "form-group">
+                    <label for="coverInput" class = "for-check-label">SoftCover</label>
+                    <input type="radio" class = "form-check-input" id ="hardInput" placeholder="Hardcover" name = "cover" value = "true">
+                  </div>
+                  <div class = "form-group">
+                      <label for ="priceInput">Price</label>
+                      <input type="number" value="20" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" id="priceInput" />
+                  </div>
+                  <div class = "form-group">
+                      <label for ="descInput">Description:</label>
+                  </div>
+                  <textarea id = "descInput"></textarea>
+                  <br>
+            </form>
+            <button class="btn btn-lg btn-outline-primary" id="submitBook" value = "">Add Book</button>
+        </div>
+        <div class="jumbotron" id="output">
+
+        </div>
     </body>
+    <script>
+        let sub = document.getElementById("submitBook");
+        //console.log("run")
+        sub.addEventListener("click", (event)=>{
+            let url = "https://afternoon-hollows-50526.herokuapp.com/api/books/";
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200){
+                    document.getElementById("output").innerHTML = "<pre>" + this.responseText + "</pre>";
+                }
+            }
+            let bookData = "title=" + document.getElementById("inputTitle").value+"&"+
+                "author="+document.getElementById("authorInput").value + "&"+
+                "description="+document.getElementById("descInput").value+"&"+
+                "year="+document.getElementById("yearInput").value+"&"+
+                "hardcover="+document.querySelector('input[name=cover]:checked').value + "&" + 
+                "price=" + document.getElementById("priceInput").value;
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhttp.send(bookData);
+        })
+    </script>
 </html>
