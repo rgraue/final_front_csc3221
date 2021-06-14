@@ -5,23 +5,47 @@
         <title>Library Home</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            #banner {
+                display: grid;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <ul class="navbar-nav">
-                <li>
-                    <a class="nav-link navbar-brand" href="./index.html">Ryan's Library</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./book.html">Books</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./authors.html">Authors</a>
-                </li>
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "./show-book.html">Find Book</a>
-                </li>
-            </ul>
+            <div class ="navbar-header navbar-left">
+                <ul class="navbar-nav">
+                    <li>
+                        <a class="nav-link navbar-brand" href="./index.html">Ryan's Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./book.html">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./authors.html">Authors</a>
+                    </li>
+                    <li class = "nav-item">
+                        <a class = "nav-link" href = "./show-book.html">Find Book</a>
+                    </li>
+                    <li class = "nav-item">
+                        <a class = "nav-link" href = "./delete-book.html">Delete Book</a>
+                    </li>
+                    <li class = "nav-item">
+                        <a class = "nav-link" href = "./show-authors.html">Find Author</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
+        <div id = "banner">
+            <h1>Welcome to Ryan's Library</h1>
+            <p>Enjoy the finest collection of books</p>
+            <div>
+                <img src="./imgs/bookcase.png" alt = "bookcase">
+            </div>
+        </div>
+        
     </body>
 </html>

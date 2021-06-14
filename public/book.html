@@ -97,7 +97,6 @@
                 return table;
             }
             function RetrieveData(){
-                console.log("loaded")
                 let url = "https://afternoon-hollows-50526.herokuapp.com/api/books"
                 let xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function (){
@@ -119,7 +118,6 @@
 
             let confirm = document.getElementById("confirmDelete");
             confirm.addEventListener("click", () =>{
-                console.log("run")
                 let url = "https://afternoon-hollows-50526.herokuapp.com/api/books/" + deleteID;
                 let xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function (){
