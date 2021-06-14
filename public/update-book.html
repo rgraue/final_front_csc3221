@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
             <ul class="navbar-nav">
                 <li>
                     <a class="nav-link navbar-brand" href="./index.html">Ryan's Library</a>
@@ -18,7 +18,121 @@
                 <li class="nav-item">
                     <a class="nav-link" href="./authors.html">Authors</a>
                 </li>
+                <li class = "nav-item">
+                    <a class = "nav-link" href = "./show-book.html">Find Book</a>
+                </li>
             </ul>
         </nav>
+        <div class = "container">
+            <form>
+                <label for= "serchInput">Search Book ID:</label>
+                <input id = "searchInput" type = "text" placeholder = "Book ID" required>
+            </form>
+            <button id = "bookSearch">Search Book</button>
+        </div>
+        <div class="jumbotron" id="output">
+        </div>
+        <div id = "inputForm" style="display: none;">
+            <form>
+                <div class="form-group">
+                    <label for="titleInput">Title</label>
+                    <input type="text" class="form-control" id="inputTitle" placeholder="Title" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="authorInput">Author</label>
+                    <input type="text" class="form-control" id="authorInput" placeholder="Author" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="yearInput">Year</label>
+                    <input type="number"  max = "2021" min = "0" class="form-control" id="yearInput" placeholder="Year Input">
+                  </div>
+                  <div class="form-group">
+                    <label for="coverInput" class = "for-check-label">HardCover</label>
+                    <input type="radio" class="form-check-input" id="softInput" placeholder="Softcover" name = "cover" value = "false" checked>
+                  </div>
+                  <div class = "form-group">
+                    <label for="coverInput" class = "for-check-label">SoftCover</label>
+                    <input type="radio" class = "form-check-input" id ="hardInput" placeholder="Hardcover" name = "cover" value = "true">
+                  </div>
+                  <div class = "form-group">
+                      <label for ="priceInput">Price</label>
+                      <input type="number" value="20" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" id="priceInput" />
+                  </div>
+                  <div class = "form-group">
+                      <label for ="descInput">Description:</label>
+                  </div>
+                  <textarea id = "descInput"></textarea>
+                  <br>
+            </form>
+            <button class="btn btn-lg btn-outline-primary" id="submitBook" value = "">Add Book</button>
+        </div>
+        <script>
+            const currentUrl = window.location.href.replace('.html?', "/=&");
+            let params = new URLSearchParams(currentUrl)
+
+            // if came from edit link displays book id as placeholder and populates table
+            if (params.has('id')){
+                let searchBar=document.getElementById("searchInput");
+                searchBar.placeholder = params.get('id') + "";
+                RetrieveData(params.get('id'));
+            }
+
+            function buildTable(data){
+                let table = "";
+                table =
+                    '<table class="table table-bordered table-hover"> \n' +
+                    '   <thead>\n' +
+                    '       <tr>\n' +
+                    '           <th scope="col">ID</th>\n'+
+                    '           <th scope="col">Title</th> \n'+
+                    '           <th scope="col">Description</th> \n'+
+                    '           <th scope="col">Year</th> \n'+
+                    '           <th scope="col">Author</th> \n'+
+                    '           <th scope="col">HardCover</th> \n'+
+                    '           <th scope="col">Price</th> \n'+
+                '               <th scope = "col" colspan="2">Actions</th>\n'+
+                    '       </tr>\n' +
+                    '   </thead>\n' +
+                    '   <tbody>\n';
+                    table +=
+                        '       <tr>\n' +
+                        '           <td>' + data["_id"]+  '</td>\n' +
+                        '           <td>' + data["title"]+  '</td>\n' +
+                        '           <td>' + data["description"]+  '</td>\n' +
+                        '           <td>' + data["year"]+  '</td>\n' +
+                        '           <td>' + data["author"]+  '</td>\n' +
+                        '           <td>' + data["hardcover"]+  '</td>\n' +
+                        '           <td>' + data["price"]+  '</td>\n' +
+                        '           <td><a href = "./update-book.html?id='+data["_id"] +'">Edit</a></td>\n'+
+                        '           <td><a href="javascript:;" onclick="Delete(\''+ data["_id"] +'\')">Delete</td>\n'+
+                        '       </tr>\n';
+                table +=
+                    '   </tbody>\n' +
+                    '</table>\n'
+                return table;
+            }
+
+            function RetrieveData(id){
+                let url = "https://afternoon-hollows-50526.herokuapp.com/api/books/" + id
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function(){
+                    if (this.readyState == 4 && this.status == 200){
+                        document.getElementById("output").innerHTML = buildTable(JSON.parse(this.responseText))
+                    } else if (this.status == 500){
+                        document.getElementById("output").innerHTML = "Book ID: <strong>"+document.getElementById("searchInput").value+ "</strong> not Found"
+                    }
+                }
+                xhttp.open('GET', url, true);
+                xhttp.send();
+                
+            }
+
+            let search = document.getElementById("bookSearch");
+            search.addEventListener("click", () =>{
+                RetrieveData(document.getElementById("searchInput").value);
+            })
+
+
+        </script>
     </body>
 </html>
