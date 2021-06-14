@@ -2,9 +2,9 @@
   "name": "final_front_csc3221",
   "version": "1.0.0",
   "description": "Front end of final_server_csc3221",
-  "main": "apps.js",
+  "main": "app.js",
   "scripts": {
-    "start": "app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
