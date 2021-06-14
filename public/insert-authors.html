@@ -20,6 +20,42 @@
                 </li>
             </ul>
         </nav>
-        
+        <div id = "inputForm">
+            <form id = "authorForm">
+                <div clas = "form-group">
+                    <label for="nameInput">Author Name</label>
+                    <input type="text" class="form-control" id="nameInput" placeholder="Name" required>
+                </div>
+                <div clas = "form-group">
+                    <label for="nationInput">Author Nationality</label>
+                    <input type="text" class="form-control" id="nationInput" placeholder="Nationality" required>
+                </div>
+            </form>
+            <button class="btn btn-lg btn-outline-primary" id="submitBook" value = "">Add Author</button>
+        </div>
+        <div class="jumbotron" id="output">
+
+        </div>
+        <script>
+            let sub = document.getElementById("submitBook");
+        //console.log("run")
+        sub.addEventListener("click", (event)=>{
+            let url = "https://afternoon-hollows-50526.herokuapp.com/api/authors/";
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200){
+                    document.getElementById("output").innerHTML = "Author added. ID: " + "<pre>" + JSON.parse(this.responseText)['id'] + "</pre>";
+                } else {
+                    document.getElementById("output").innerHTML = "Fill in <strong>all </strong> sections of form.";
+                }
+            }
+
+            let bookData = "name=" + document.getElementById("nameInput").value+"&"+
+                "nationality="+document.getElementById("nationInput").value + "&";
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhttp.send(bookData);
+        })
+        </script>
     </body>
 </html>
