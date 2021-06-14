@@ -36,11 +36,11 @@
                   </div>
                   <div class="form-group">
                     <label for="coverInput" class = "for-check-label">HardCover</label>
-                    <input type="radio" class="form-check-input" id="softInput" placeholder="Softcover" name = "cover" value = "false" checked>
+                    <input type="radio" class="form-check-input" id="softInput" placeholder="Softcover" name = "cover" value = "true" checked>
                   </div>
                   <div class = "form-group">
                     <label for="coverInput" class = "for-check-label">SoftCover</label>
-                    <input type="radio" class = "form-check-input" id ="hardInput" placeholder="Hardcover" name = "cover" value = "true">
+                    <input type="radio" class = "form-check-input" id ="hardInput" placeholder="Hardcover" name = "cover" value = "false">
                   </div>
                   <div class = "form-group">
                       <label for ="priceInput">Price</label>
@@ -51,8 +51,10 @@
                   </div>
                   <textarea id = "descInput"></textarea>
                   <br>
+                  
             </form>
             <button class="btn btn-lg btn-outline-primary" id="submitBook" value = "">Add Book</button>
+            
         </div>
         <div class="jumbotron" id="output">
 
@@ -69,12 +71,15 @@
                     document.getElementById("output").innerHTML = "<pre>" + this.responseText + "</pre>";
                 }
             }
+
+            let price = document.getElementById("priceInput").value;
+            price = Number(price).toFixed(2);
             let bookData = "title=" + document.getElementById("inputTitle").value+"&"+
                 "author="+document.getElementById("authorInput").value + "&"+
                 "description="+document.getElementById("descInput").value+"&"+
                 "year="+document.getElementById("yearInput").value+"&"+
-                "hardcover="+document.querySelector('input[name=cover]:checked').value + "&" + 
-                "price=" + document.getElementById("priceInput").value;
+                "hardCover="+document.querySelector('input[name=cover]:checked').value + "&" + 
+                "price=" + price;
             xhttp.open('POST', url, true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhttp.send(bookData);

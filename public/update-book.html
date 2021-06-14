@@ -36,11 +36,11 @@
             <form>
                 <div class="form-group">
                     <label for="titleInput">Title</label>
-                    <input type="text" class="form-control" id="inputTitle" placeholder="Title" required>
+                    <input type="text" class="form-control" id="inputTitle" placeholder="Title">
                   </div>
                   <div class="form-group">
                     <label for="authorInput">Author</label>
-                    <input type="text" class="form-control" id="authorInput" placeholder="Author" required>
+                    <input type="text" class="form-control" id="authorInput" placeholder="Author">
                   </div>
                   <div class="form-group">
                     <label for="yearInput">Year</label>
@@ -48,15 +48,15 @@
                   </div>
                   <div class="form-group">
                     <label for="coverInput" class = "for-check-label">HardCover</label>
-                    <input type="radio" class="form-check-input" id="softInput" placeholder="Softcover" name = "cover" value = "false" checked>
+                    <input type="radio" class="form-check-input" id="softInput" placeholder="Softcover" name = "cover" value = "true">
                   </div>
                   <div class = "form-group">
                     <label for="coverInput" class = "for-check-label">SoftCover</label>
-                    <input type="radio" class = "form-check-input" id ="hardInput" placeholder="Hardcover" name = "cover" value = "true">
+                    <input type="radio" class = "form-check-input" id ="hardInput" placeholder="Hardcover" name = "cover" value = "false">
                   </div>
                   <div class = "form-group">
                       <label for ="priceInput">Price</label>
-                      <input type="number" value="20" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" id="priceInput" />
+                      <input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" id="priceInput" />
                   </div>
                   <div class = "form-group">
                       <label for ="descInput">Description:</label>
@@ -64,18 +64,14 @@
                   <textarea id = "descInput"></textarea>
                   <br>
             </form>
-            <button class="btn btn-lg btn-outline-primary" id="submitBook" value = "">Add Book</button>
+            <button class="btn btn-lg btn-outline-primary" id="submitBook" value = "">Update Book</button>
         </div>
         <script>
             const currentUrl = window.location.href.replace('.html?', "/=&");
             let params = new URLSearchParams(currentUrl)
 
             // if came from edit link displays book id as placeholder and populates table
-            if (params.has('id')){
-                let searchBar=document.getElementById("searchInput");
-                searchBar.placeholder = params.get('id') + "";
                 RetrieveData(params.get('id'));
-            }
 
             function buildTable(data){
                 let table = "";
@@ -101,7 +97,7 @@
                         '           <td>' + data["description"]+  '</td>\n' +
                         '           <td>' + data["year"]+  '</td>\n' +
                         '           <td>' + data["author"]+  '</td>\n' +
-                        '           <td>' + data["hardcover"]+  '</td>\n' +
+                        '           <td>' + data["hardCover"]+  '</td>\n' +
                         '           <td>' + data["price"]+  '</td>\n' +
                         '           <td><a href = "./update-book.html?id='+data["_id"] +'">Edit</a></td>\n'+
                         '           <td><a href="javascript:;" onclick="Delete(\''+ data["_id"] +'\')">Delete</td>\n'+
@@ -113,24 +109,66 @@
             }
 
             function RetrieveData(id){
+                params.set('id', id);
                 let url = "https://afternoon-hollows-50526.herokuapp.com/api/books/" + id
                 let xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function(){
                     if (this.readyState == 4 && this.status == 200){
                         document.getElementById("output").innerHTML = buildTable(JSON.parse(this.responseText))
+                        document.getElementById("inputForm").style.display = "grid"
                     } else if (this.status == 500){
                         document.getElementById("output").innerHTML = "Book ID: <strong>"+document.getElementById("searchInput").value+ "</strong> not Found"
+                        document.getElementById("inputForm").style.display = "none"
                     }
                 }
                 xhttp.open('GET', url, true);
                 xhttp.send();
-                
             }
 
             let search = document.getElementById("bookSearch");
             search.addEventListener("click", () =>{
                 RetrieveData(document.getElementById("searchInput").value);
             })
+
+            let sub = document.getElementById("submitBook");
+            sub.addEventListener("click", (event)=>{
+            let url = "https://afternoon-hollows-50526.herokuapp.com/api/books/" + params.get('id');
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200){
+                    RetrieveData(params.get('id'))
+                }
+            }
+            let bookData ="";
+            //document.querySelector('input[name=cover]:checked').value
+            if(document.getElementById("inputTitle").value){
+                 bookData += "title=" + document.getElementById("inputTitle").value+"&"
+            }
+            if(document.getElementById("authorInput").value){
+                bookData += "author="+document.getElementById("authorInput").value + "&"
+            }
+            if (document.getElementById("descInput").value) {
+                bookData += "description="+document.getElementById("descInput").value+"&"
+            }
+            if (document.getElementById("yearInput").value){
+                bookData += "year="+document.getElementById("yearInput").value+"&"
+            }
+            if (document.getElementById("softInput").checked == true){
+                bookData += "hardCover=true&" 
+            }
+            if (document.getElementById("hardInput").checked == true){
+                bookData += "hardCover=false&" 
+            }
+            if (document.getElementById("priceInput").value){
+
+                bookData += "price=" + Number(document.getElementById("priceInput").value).toFixed(2) + "&";
+            }
+            bookData = bookData.replace(/.$/, '');
+            console.log(bookData)
+            xhttp.open('PATCH', url, true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhttp.send(bookData);
+        })
 
 
         </script>
